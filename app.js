@@ -4,6 +4,11 @@ const dotenv=require("dotenv");
 dotenv.config();
 const app=express();
 
+// Import all routers here
+const userRouter = require("./router/user")
+
+app.use("/auth", userRouter)
+
 app.use(express.json())
 
 mongoose.connect("mongodb://localhost:27017/Ecomerce")
