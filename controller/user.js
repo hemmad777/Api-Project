@@ -1,33 +1,31 @@
 const express = require("express");
 
-const Users=require("../Model/user");
+const Users=require("../model/user");
 
 // Created userRegister section
 exports.register = async (req,res)=>{
     try {
-        const{id,name,email,password,role,createdAt}=req.body;
+        const {name,email,password,role}=req.body;
 
-    if(!id||!name||!email||!password||!role||!createdAt){
+    if(!name||!email||!password||!role){
         return res.status(401).json({message:"All fields required"});
     }
 
-    const existUser=Users.findOne({gmail:gmail});
+    const existUser=await Users.findOne({email:email});
 
     if(existUser){
        return res.status(401).json({message:"This user allready exist"});
     }
 
-    const user={
-        id,
+    const user=new Users({
         name,
         email,
         password,
-        role,
-        createdAt
-    }
+        role
+    })
 
     await user.save();
-    res.status(201).json({message:"Registration succesfully"+user});
+    res.status(201).json({message:"Registration succesfully",user:user});
 
     } catch (error) {
         res.status(500).json({message:"Error happened when running :"+error})
@@ -36,7 +34,7 @@ exports.register = async (req,res)=>{
 
 // Logic for user login
 
-exports.userLogin= async (req,res)=>{
+exports.login= async (req,res)=>{
     try {
         const {email,password}=req.body;
 
@@ -46,7 +44,7 @@ exports.userLogin= async (req,res)=>{
             return res.status(404).json({message:"Not found user with this email"})
         }
 
-        res.status(201).json({message:"registration succesfully the user"+user});
+        res.status(201).json({message:"registration succesfully the user",user:user});
     } catch (error) {
         res.status(500).json({message:"Error happened when run is: "+error.message});
     }
@@ -64,7 +62,7 @@ exports.userGetById=async (req,res)=>{
             return res.status(404).json({message:"can't find user with this Id"});
         }
 
-        res.status(201).json({message:`User with this id ${id} is : ${user}`});
+        res.status(201).json({message:`User with this id ${id} is :`,user:user});
     } catch (error) {
         res.status(500).json({message:"Error happened whe run is :"+error.message})
     }
@@ -84,7 +82,7 @@ exports.userUpdateById=async (req,res)=>{
             createdAt
         }
 
-        if(!name||!email||!password||!role||!createdAt){
+        if(!name&&!email&&!password&&!role&&!createdAt){
             return res.status(401).json({message:"Enter atleaste one field for update"})
         }
     
@@ -94,7 +92,9 @@ exports.userUpdateById=async (req,res)=>{
             res.status(401).json({message:"Not found the user with this Id"});
         }
 
-        res.status(201).json({message:"Successfully ubdated this user"+userUpdate});
+        const updatedUser=await Users.findById(id);
+
+        res.status(201).json({message:"Successfully ubdated this user",user:updatedUser});
     
     } catch (error) {
         res.status(500).json({message:"Error happened when run is "+error.message})
@@ -113,7 +113,7 @@ exports.userDeleteById=async (req,res)=>{
         res.status(404).json({message:"Not found the user with this Id"});
     }
 
-    res.status(201).json({message:"Deleted this user"+deleteUser});
+    res.status(201).json({message:"Deleted this user",user:deleteUser});
     } catch (error) {
         res.status(500).json({message:"Error happened whe run"+error.message});
     }
