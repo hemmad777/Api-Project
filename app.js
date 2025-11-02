@@ -8,8 +8,10 @@ app.use(express.json())
 
 // Import all routers here
 const userRouter = require("./router/user")
+const productRouter=require("./router/product");
 
-app.use("/auth", userRouter)
+app.use("/auth", userRouter);
+app.use("/",productRouter);
 
 
 
