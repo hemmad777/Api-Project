@@ -11,7 +11,7 @@ const userRouter = require("./router/user")
 const productRouter=require("./router/product");
 
 app.use("/auth", userRouter);
-app.use("/",productRouter);
+app.use("/products",productRouter);
 
 
 

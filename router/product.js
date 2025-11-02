@@ -1,8 +1,9 @@
 const express=require("express");
 const productRoute=express.Router();
 
-const {getAllProducts}=require("../controller/product");
+const {getAllProducts,getProductById}=require("../controller/product");
 
-productRoute.get("/products",getAllProducts);
+productRoute.get("/all",getAllProducts);
+productRoute.get("/:id",getProductById);
 
 module.exports=productRoute;
