@@ -1,4 +1,3 @@
-const express = require("express");
 
 const Users=require("../model/user");
 
@@ -28,7 +27,7 @@ exports.register = async (req,res)=>{
     res.status(201).json({message:"Registration succesfully",user:user});
 
     } catch (error) {
-        res.status(500).json({message:"Error happened when running :"+error})
+        return res.status(500).json({message:"Error happened when running :"+error})
     }
 }
 
@@ -46,7 +45,7 @@ exports.login= async (req,res)=>{
 
         res.status(201).json({message:"registration succesfully the user",user:user});
     } catch (error) {
-        res.status(500).json({message:"Error happened when run is: "+error.message});
+        return res.status(500).json({message:"Error happened when run is: "+error.message});
     }
 }
 
@@ -64,7 +63,7 @@ exports.userGetById=async (req,res)=>{
 
         res.status(201).json({message:`User with this id ${id} is :`,user:user});
     } catch (error) {
-        res.status(500).json({message:"Error happened whe run is :"+error.message})
+        return res.status(500).json({message:"Error happened whe run is :"+error.message})
     }
 }
 
@@ -89,7 +88,7 @@ exports.userUpdateById=async (req,res)=>{
         const userUpdate=await Users.findByIdAndUpdate(id,user);
 
         if(!userUpdate){
-            res.status(401).json({message:"Not found the user with this Id"});
+            return res.status(401).json({message:"Not found the user with this Id"});
         }
 
         const updatedUser=await Users.findById(id);
@@ -97,7 +96,7 @@ exports.userUpdateById=async (req,res)=>{
         res.status(201).json({message:"Successfully ubdated this user",user:updatedUser});
     
     } catch (error) {
-        res.status(500).json({message:"Error happened when run is "+error.message})
+        return res.status(500).json({message:"Error happened when run is "+error.message})
     }
 }
 
@@ -110,11 +109,11 @@ exports.userDeleteById=async (req,res)=>{
     const deleteUser=await Users.findByIdAndDelete(id);
 
     if(!deleteUser){
-        res.status(404).json({message:"Not found the user with this Id"});
+        return res.status(404).json({message:"Not found the user with this Id"});
     }
 
     res.status(201).json({message:"Deleted this user",user:deleteUser});
     } catch (error) {
-        res.status(500).json({message:"Error happened whe run"+error.message});
+        return res.status(500).json({message:"Error happened when run"+error.message});
     }
 }
