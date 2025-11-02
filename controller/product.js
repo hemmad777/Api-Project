@@ -34,3 +34,30 @@ exports.getProductById=async (req,res)=>{
         return res.status(500).json({message:error.message})
     }
 }
+
+// Product search by name or description
+
+exports.productSearch=async (req,res)=>{
+    try {
+        const query=req.query.q
+
+        if(!query||query.trim()==""){
+            return res.status(400).json({message:"Please enter you want search"})
+        }
+
+        const products=await Product.find({
+            $or:[
+                {name:{$regex:query,$options:"i"}},
+                {description:{$regex:query,$options:"i"}}
+            ]
+        });
+
+        if(!products||products.length===0){
+            return res.status(400).json({message:"Not found products"});
+        }
+
+        res.status(201).json({message:"All searched products",products:products});
+    } catch (error) {
+        return res.status(500).json({error:error.message});
+    }
+}
