@@ -1,4 +1,5 @@
 
+const { default: mongoose } = require("mongoose");
 const Product =require("../model/product");
 const Wishlist=require("../model/wishlist");
 
@@ -43,5 +44,26 @@ exports.getAllWishlists=async (req,res)=>{
         res.status(201).json({message:"Your all wishlist",wishlist:wishlist});
     } catch (error) {
         res.status(500).json({message:'knfo'+error.message})
+    }
+}
+
+// Get product by Id from wishlist
+
+exports.getProductById=async(req,res)=>{
+    try {
+        const {productId}=req.params;
+        const prodcut=await Wishlist.findOne({
+            productId:new mongoose.Types.ObjectId(productId)
+        });
+
+        if(!prodcut){
+            res.status(404).json({message:"Nor found this product"});
+        }
+
+        res.status(201).json({message:"You finded prodct is this",prodcut:prodcut});
+
+
+    } catch (error) {
+        res.status(500).json({message:error.message});
     }
 }
