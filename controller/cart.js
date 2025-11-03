@@ -1,6 +1,8 @@
 const Cart=require("../model/cart");
 const Product=require("../model/product");
 
+
+// Logic for Post cart
 exports.postCart=async (req,res)=>{
     try {
         const {productId,quantity,price}=req.body;
@@ -23,8 +25,24 @@ exports.postCart=async (req,res)=>{
 
         await cart.save();
 
-        res.status(201).json({message:"Successfully added the product", cart })
+        res.status(201).json({message:"Successfully added the product",cart:cart})
     } catch (error) {
         res.status(500).json({message:error.message});
+    }
+}
+
+// Logic for Get all cart
+
+exports.getAllCart=async (req,res)=>{
+    try {
+        const cart=await Cart.find();
+
+        if(!cart){
+            res.status(404).json({message:"Not found in your cart"})
+        }
+
+        res.status(200).json({message:"This is your cart",cart:cart})
+    } catch (error) {
+        res.status(500).json({error:error.message});
     }
 }
