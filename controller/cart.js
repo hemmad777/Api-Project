@@ -1,6 +1,6 @@
 const Cart=require("../model/cart");
 const Product=require("../model/product");
-
+const mongoose=require("mongoose");
 
 // Logic for Post cart
 exports.postCart=async (req,res)=>{
@@ -59,6 +59,27 @@ exports.deleteCart=async (req,res)=>{
 
         res.status(200).json({message:"Successfully deleted the cart",cart:deleteCart});
 
+        
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
+
+// Logic for delete One from cart
+
+exports.deleteOne=async (req,res)=>{
+    try {
+        const {productId}=req.params;
+
+        const existProduct=await Cart.findOneAndDelete({
+            productId:new mongoose.Types.ObjectId(productId),
+        });
+
+        if(!existProduct){
+            res.status(404).json({message:"this product not in your cart"});
+        }
+
+        res.status(200).json({message:"successfully deleted this product from cart",product:existProduct});
         
     } catch (error) {
         res.status(500).json({message:error.message});
