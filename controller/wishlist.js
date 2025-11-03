@@ -27,3 +27,21 @@ exports.addProduct=async (req,res)=>{
     }
 }
 
+// Get all wishlist products
+
+exports.getAllWishlists=async (req,res)=>{
+    try {
+        const wishlist=await Wishlist.find()
+
+        console.log(wishlist);
+        
+
+        if(!wishlist){
+            res.status(401).json({message:"Wishlist also empty"})
+        }
+
+        res.status(201).json({message:"Your all wishlist",wishlist:wishlist});
+    } catch (error) {
+        res.status(500).json({message:'knfo'+error.message})
+    }
+}
