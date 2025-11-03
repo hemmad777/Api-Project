@@ -10,10 +10,12 @@ app.use(express.json())
 const userRouter = require("./router/user")
 const productRouter=require("./router/product");
 const cartRouter=require("./router/cart");
+const wishlistRouter=require("./router/wishlist")
 
 app.use("/auth", userRouter);
 app.use("/products",productRouter);
 app.use("/cart",cartRouter);
+app.use("/wishlist",wishlistRouter);
 
 
 
