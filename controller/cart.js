@@ -46,3 +46,21 @@ exports.getAllCart=async (req,res)=>{
         res.status(500).json({error:error.message});
     }
 }
+
+// Logic for Delete entire cart
+
+exports.deleteCart=async (req,res)=>{
+    try {
+        const deleteCart=await Cart.deleteMany();
+
+        if(deleteCart.deletedCount===0){
+            res.status(401).json({message:"Cart also empty"});
+        }
+
+        res.status(200).json({message:"Successfully deleted the cart",cart:deleteCart});
+
+        
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}

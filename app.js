@@ -13,7 +13,7 @@ const cartRouter=require("./router/cart");
 
 app.use("/auth", userRouter);
 app.use("/products",productRouter);
-app.use("/",cartRouter);
+app.use("/cart",cartRouter);
 
 
 
