@@ -3,6 +3,8 @@ const { default: mongoose } = require("mongoose");
 const Product =require("../model/product");
 const Wishlist=require("../model/wishlist");
 
+// Add product to wihslist
+
 exports.addProduct=async (req,res)=>{
     try {
         const {productId}=req.params;
