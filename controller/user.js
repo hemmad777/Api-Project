@@ -1,5 +1,9 @@
-
+const jwt=require("jsonwebtoken");
+const bcrypt=require("bcrypt");
 const Users=require("../model/user");
+const dotEnv=require("dotenv").config();
+
+
 
 // Created userRegister section
 exports.register = async (req,res)=>{
@@ -16,10 +20,12 @@ exports.register = async (req,res)=>{
        return res.status(401).json({message:"This user allready exist"});
     }
 
+    const bcryptPass=await bcrypt.hash(password,10);
+
     const user=new Users({
         name,
         email,
-        password,
+        password:bcryptPass,
         role
     })
 
@@ -43,10 +49,16 @@ exports.login= async (req,res)=>{
             return res.status(404).json({message:"Not found user with this email"})
         }
 
+        const isMatch=await bcrypt.compare(password,user.password);
+
+        if(!isMatch){
+            res.status(400).json({message:"You entered incorrect password"});
+        }
+
         const token=jwt.sign(
             {email},
-            process.env.jwtSecret,
-            {expiresIn:process.env.jwtExp}
+            process.env.JWT_SECRET,
+            {expiresIn:process.env.JWT_EXP}
         )
 
         if(!token){
