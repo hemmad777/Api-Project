@@ -43,7 +43,17 @@ exports.login= async (req,res)=>{
             return res.status(404).json({message:"Not found user with this email"})
         }
 
-        res.status(201).json({message:"registration succesfully the user",user:user});
+        const token=jwt.sign(
+            {email},
+            process.env.jwtSecret,
+            {expiresIn:process.env.jwtExp}
+        )
+
+        if(!token){
+            res.status(401).json({message:"Invalid candidates"});
+        }
+
+        res.status(201).json({message:"registration succesfully the user",user:token,user});
     } catch (error) {
         return res.status(500).json({message:"Error happened when run is: "+error.message});
     }
