@@ -65,7 +65,7 @@ exports.login= async (req,res)=>{
             res.status(401).json({message:"Invalid candidates"});
         }
 
-        res.status(201).json({message:"registration succesfully the user",user:token,user});
+        res.status(201).json({message:"registration succesfully the user",user:user,token:token});
     } catch (error) {
         return res.status(500).json({message:"Error happened when run is: "+error.message});
     }
