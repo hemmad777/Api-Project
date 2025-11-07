@@ -19,6 +19,10 @@ const userSchema=new mongoose.Schema({
         required:[true,"Please enter password"],
         minLength:[8,"Enter atleast 8 characters"]
     },
+    role:{
+        type:String,
+        default:"Customer"
+    },
     createdAt:{
         type:Date,
         default:Date.now
