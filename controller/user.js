@@ -80,10 +80,10 @@ exports.userGetMe=async (req,res)=>{
         const user=await Users.findOne({email:email});
 
         if(!user){
-            return res.status(404).json({message:"can't find user with this Id"});
+            return res.status(404).json({message:"You are not logged"});
         }
 
-        res.status(201).json({message:`User with this id is :`,user:user});
+        res.status(201).json({message:`Your details are :`,user:user});
     } catch (error) {
         return res.status(500).json({message:"Error happened whe run is :"+error.message})
     }
