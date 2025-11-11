@@ -73,17 +73,17 @@ exports.login= async (req,res)=>{
 
 // Logic for Get current logined details
 
-exports.userGetById=async (req,res)=>{
+exports.userGetMe=async (req,res)=>{
     try {
-        const {id}=req.params;
+        const {email}=req.user;
 
-        const user=await Users.findById(id);
+        const user=await Users.findOne({email:email});
 
         if(!user){
             return res.status(404).json({message:"can't find user with this Id"});
         }
 
-        res.status(201).json({message:`User with this id ${id} is :`,user:user});
+        res.status(201).json({message:`User with this id is :`,user:user});
     } catch (error) {
         return res.status(500).json({message:"Error happened whe run is :"+error.message})
     }
