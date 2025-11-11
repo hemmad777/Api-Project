@@ -1,16 +1,16 @@
 const express = require("express");
 const userRoute = express.Router();
 
-const { register,login,userDeleteById,userGetById,userUpdateById } = require("../controller/user");
+const { register,login,userGetMe } = require("../controller/user");
 const {verifyToken}=require("../middleware/auth")
 
 
 userRoute.post("/register", register);
 userRoute.post("/login",login);
-userRoute.get("/:id",verifyToken,userGetById);
+userRoute.get("/me",verifyToken,userGetMe);
 
 
 
-// Define other routes here
+
 
 module.exports = userRoute;
