@@ -8,9 +8,9 @@ const dotEnv=require("dotenv").config();
 // Created userRegister section
 exports.register = async (req,res)=>{
     try {
-        const {name,email,password,role}=req.body;
+        const {name,email,password}=req.body;
 
-    if(!name||!email||!password||!role){
+    if(!name||!email||!password){
         return res.status(401).json({message:"All fields required"});
     }
 
@@ -26,7 +26,7 @@ exports.register = async (req,res)=>{
         name,
         email,
         password:bcryptPass,
-        role
+        role:"Customer"
     })
 
     await user.save();
@@ -52,7 +52,7 @@ exports.login= async (req,res)=>{
         const isMatch=await bcrypt.compare(password,user.password);
 
         if(!isMatch){
-            res.status(400).json({message:"You entered incorrect password"});
+            return res.status(400).json({message:"You entered incorrect password"});
         }
 
         const token=jwt.sign(
@@ -62,7 +62,7 @@ exports.login= async (req,res)=>{
         )
 
         if(!token){
-            res.status(401).json({message:"Invalid candidates"});
+            return res.status(401).json({message:"Invalid candidates"});
         }
 
         res.status(201).json({message:"registration succesfully the user",user:user,token:token});
@@ -71,7 +71,7 @@ exports.login= async (req,res)=>{
     }
 }
 
-// Logic for Get user by Id
+// Logic for Get current logined details
 
 exports.userGetById=async (req,res)=>{
     try {
@@ -89,53 +89,4 @@ exports.userGetById=async (req,res)=>{
     }
 }
 
-// Logic for Update by Id
 
-exports.userUpdateById=async (req,res)=>{
-    try {
-        const {id}=req.params;
-        const {name,email,password,role,createdAt}=req.body;
-        const user={
-            name,
-            email,
-            password,
-            role,
-            createdAt
-        }
-
-        if(!name&&!email&&!password&&!role&&!createdAt){
-            return res.status(401).json({message:"Enter atleaste one field for update"})
-        }
-    
-        const userUpdate=await Users.findByIdAndUpdate(id,user);
-
-        if(!userUpdate){
-            return res.status(401).json({message:"Not found the user with this Id"});
-        }
-
-        const updatedUser=await Users.findById(id);
-
-        res.status(201).json({message:"Successfully ubdated this user",user:updatedUser});
-    
-    } catch (error) {
-        return res.status(500).json({message:"Error happened when run is "+error.message})
-    }
-}
-
-// Logic for delete by Id
-
-exports.userDeleteById=async (req,res)=>{
-    try {
-        const{id}=req.params;
-
-    const deleteUser=await Users.findByIdAndDelete(id);
-
-    if(!deleteUser){
-        return res.status(404).json({message:"Not found the user with this Id"});
-    }
-
-    res.status(201).json({message:"Deleted this user",user:deleteUser});
-    } catch (error) {
-        return res.status(500).json({message:"Error happened when run"+error.message});
-    }
-}
