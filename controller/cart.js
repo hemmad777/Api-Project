@@ -37,8 +37,8 @@ exports.getAllCart=async (req,res)=>{
     try {
         const cart=await Cart.find();
 
-        if(!cart){
-            res.status(404).json({message:"Not found in your cart"})
+        if(!cart||cart.length==0){
+            res.status(404).json({message:"Not found Cart is also empty"})
         }
 
         res.status(200).json({message:"This is your cart",cart:cart})
