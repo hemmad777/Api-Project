@@ -5,9 +5,9 @@ const mongoose=require("mongoose");
 // Logic for Post cart
 exports.postCart=async (req,res)=>{
     try {
-        const {productId,quantity,price}=req.body;
+        const {productId,quantity}=req.body;
 
-        if(!productId||!quantity||!price){
+        if(!productId||!quantity){
             return res.status(401).json({message:"provide all details"})
         }
 
@@ -20,7 +20,7 @@ exports.postCart=async (req,res)=>{
         const cart= new Cart({
             productId,
             quantity,
-            price
+            price:product.price
         });
 
         await cart.save();
