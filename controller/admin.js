@@ -37,5 +37,18 @@ exports.createAdmin=async (req,res)=>{
     }
 }
 
+// logic for get all users
 
+exports.getAllUsers=async (req,res)=>{
+    try {
+        const users=await Users.find();
 
+        if(!users){
+            return res.status(400).json({message:"Products also empty"})
+        }
+        
+        res.status(200).json({message:"Successfully take all user details",users:users});
+    } catch (error) {
+        res.status(500).json({error:error.message});
+    }
+}
