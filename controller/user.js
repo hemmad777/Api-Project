@@ -78,9 +78,9 @@ exports.login= async (req,res)=>{
 
 exports.userGetMe=async (req,res)=>{
     try {
-        const {email}=req.user;
+        const {userId}=req.user;
 
-        const user=await Users.findOne({email:email});
+        const user=await Users.findById(userId);
 
         if(!user){
             return res.status(404).json({message:"You are not logged"});
