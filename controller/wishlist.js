@@ -14,17 +14,22 @@ exports.addProduct=async (req,res)=>{
             return res.status(401).json({message:"Not found the product"});
         }
 
-        const exist=await Wishlist.findOne({productId});
+        const exist=await Wishlist.findOne({productId,userId:req.user.userId});
 
         if(exist){
-            res.status(401).json({message:"This product allready added"});
+            return res.status(401).json({message:"This product allready added"});
         }
 
-        const wishlist=new Wishlist ({productId});
+        
+
+        const wishlist=new Wishlist ({
+            productId,
+            userId:req.user.userId
+        });
 
         await wishlist.save();
 
-        res.status(201).json({message:"Successfully add this product to wishlist",product:product})
+        res.status(201).json({message:"Successfully add this product to wishlist",product:wishlist})
     } catch (error) {
         return res.status(500).json({message:error.message});
     }
@@ -34,18 +39,15 @@ exports.addProduct=async (req,res)=>{
 
 exports.getAllWishlists=async (req,res)=>{
     try {
-        const wishlist=await Wishlist.find()
+        const wishlist=await Wishlist.find({userId:req.user.userId});
 
-        console.log(wishlist);
-        
-
-        if(!wishlist){
-            res.status(401).json({message:"Wishlist also empty"})
+        if(!wishlist||wishlist.length==0){
+            return res.status(404).json({message:"Wishlist also empty"})
         }
 
-        res.status(201).json({message:"Your all wishlist",wishlist:wishlist});
+        res.status(200).json({message:"Your all wishlist",wishlist:wishlist});
     } catch (error) {
-        res.status(500).json({message:'knfo'+error.message})
+        res.status(500).json({message:error.message})
     }
 }
 
@@ -55,14 +57,15 @@ exports.getProductById=async(req,res)=>{
     try {
         const {productId}=req.params;
         const prodcut=await Wishlist.findOne({
-            productId:new mongoose.Types.ObjectId(productId)
+            productId:new mongoose.Types.ObjectId(productId),
+            userId:req.user.userId
         });
 
         if(!prodcut){
-            res.status(404).json({message:"Nor found this product"});
+            return res.status(404).json({message:"Nor found this product"});
         }
 
-        res.status(201).json({message:"You finded prodct is this",prodcut:prodcut});
+        res.status(200).json({message:"You finded prodct is this",prodcut:prodcut});
 
 
     } catch (error) {
