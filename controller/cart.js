@@ -17,10 +17,20 @@ exports.postCart=async (req,res)=>{
             return res.status(404).json({message:"You added product not found"});
         }
 
+        const exist=await Cart.findOne({userId:req.user.userId,productId});
+
+        if(exist){
+            exist.quantity+=quantity,
+            exist.price=product.price*exist.quantity,
+            await exist.save();
+            return res.status(200).json({message:"cart Updated",cart:exist})
+        }
+
         const cart= new Cart({
+            userId:req.user.userId,
             productId,
             quantity,
-            price:product.price
+            price:product.price*quantity
         });
 
         await cart.save();
@@ -35,13 +45,13 @@ exports.postCart=async (req,res)=>{
 
 exports.getAllCart=async (req,res)=>{
     try {
-        const cart=await Cart.find();
+        const userCart=await Cart.find({userId:req.user.userId});
 
-        if(!cart||cart.length==0){
-            res.status(404).json({message:"Not found Cart is also empty"})
+        if(!userCart||userCart.length==0){
+            return res.status(404).json({message:"Not found Cart is also empty"})
         }
 
-        res.status(200).json({message:"This is your cart",cart:cart})
+        res.status(200).json({message:"This is your cart",cart:userCart})
     } catch (error) {
         res.status(500).json({error:error.message});
     }
@@ -51,10 +61,10 @@ exports.getAllCart=async (req,res)=>{
 
 exports.deleteCart=async (req,res)=>{
     try {
-        const deleteCart=await Cart.deleteMany();
+        const deleteCart=await Cart.deleteMany({userId:req.user.userId});
 
         if(deleteCart.deletedCount===0){
-            res.status(401).json({message:"Cart also empty"});
+            return res.status(401).json({message:"Cart also empty"});
         }
 
         res.status(200).json({message:"Successfully deleted the cart",cart:deleteCart});
@@ -73,10 +83,11 @@ exports.deleteOne=async (req,res)=>{
 
         const existProduct=await Cart.findOneAndDelete({
             productId:new mongoose.Types.ObjectId(productId),
+            userId:req.user.userId
         });
 
         if(!existProduct){
-            res.status(404).json({message:"this product not in your cart"});
+            return res.status(404).json({message:"this product not in your cart"});
         }
 
         res.status(200).json({message:"successfully deleted this product from cart",product:existProduct});
