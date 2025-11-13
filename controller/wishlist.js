@@ -62,7 +62,7 @@ exports.getProductById=async(req,res)=>{
         });
 
         if(!prodcut){
-            return res.status(404).json({message:"Nor found this product"});
+            return res.status(404).json({message:"Not found this product"});
         }
 
         res.status(200).json({message:"You finded prodct is this",prodcut:prodcut});
