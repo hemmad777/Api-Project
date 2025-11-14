@@ -38,3 +38,19 @@ exports.createOrder=async (req,res)=>{
     }
 }
 
+// Logic for get all order of logined user
+
+exports.getAllOrder=async (req,res)=>{
+    try {
+        const Orders=await order.find({userId:req.user.userId});
+        
+
+        if(Orders.length==0){
+            return res.status(404).json({message:"You have no orders"});
+        }
+
+        res.status(200).json({message:"Your orders are",Orders});
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
+}
