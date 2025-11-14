@@ -12,12 +12,14 @@ const productRouter=require("./router/product");
 const cartRouter=require("./router/cart");
 const wishlistRouter=require("./router/wishlist");
 const adminRouter=require("./router/admin");
+const orderRouter=require("./router/order");
 
 app.use("/auth", userRouter);
 app.use("/products",productRouter);
 app.use("/cart",cartRouter);
 app.use("/wishlist",wishlistRouter);
 app.use("/admin",adminRouter);
+app.use("/order",orderRouter);
 
 
 

@@ -21,11 +21,11 @@ const orderSchema=new mongoose.Schema({
     },
     rozorpayOrderId:{
         type:String,
-        required:[true,"rozorpayOrderId not provided"],
+        // required:[true,"rozorpayOrderId not provided"],
     },
     rozorpayPaymentId:{
         type:String,
-        required:[true,"provide rozorpay Id"],
+        // required:[true,"provide rozorpay Id"],
     },
     shippingAddress:{
         type:Object,
@@ -33,4 +33,4 @@ const orderSchema=new mongoose.Schema({
     }
 },{timestamps:true});
 
-module.exports=mongoose.model(orderSchema,"order");
+module.exports=mongoose.model("Order",orderSchema);
