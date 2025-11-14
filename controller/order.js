@@ -54,3 +54,22 @@ exports.getAllOrder=async (req,res)=>{
         res.status(500).json({message:error.message})
     }
 }
+
+// logic for get a specific order
+
+exports.getOrderById=async(req,res)=>{
+    try {
+
+        const {orderId}=req.params;
+
+        const Order=await order.findOne({_id:orderId,userId:req.user.userId})
+
+        if(!Order){
+            return res.status(404).json({message:"Product not found"})
+        }
+
+        res.status(200).json({message:"You searched order is",Order});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
