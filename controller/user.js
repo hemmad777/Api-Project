@@ -54,8 +54,6 @@ exports.login= async (req,res)=>{
         if(!isMatch){
             return res.status(400).json({message:"You entered incorrect password"});
         }
-
-        console.log(user);
         
 
         const token=jwt.sign(
