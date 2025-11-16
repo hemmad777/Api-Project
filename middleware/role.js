@@ -4,8 +4,9 @@ exports.roleChecking=(...roles)=>{
     return async (req,res,next)=>{
         try {
             const user=await User.findById(req.user.userId);
+            
 
-            if(!user||!roles.includes(user.role)){
+            if(!user||user.role.includes(roles)){
             return res.status(403).json({message:"You not access for do this"});
             }
             next();

@@ -10,7 +10,7 @@ exports.verifyToken=(req,res,next)=>{
         const tokenParts=authHeader.split(" ");
 
         const token=tokenParts.length==2&&tokenParts[0].toLowerCase()=="bearer"
-        ?token[1]
+        ?tokenParts[1]
         :authHeader.trim()
 
         const decoded=jwt.verify(token,process.env.JWT_SECRET);

@@ -1,8 +1,7 @@
-const { strict } = require("assert");
+
 const Users=require("../model/user");
 const bcrypt=require("bcrypt");
-const slugify=require("slugify");
-const Products=require("../model/product")
+
 
 // Logic for created Admin
 exports.createAdmin=async (req,res)=>{
@@ -81,9 +80,7 @@ exports.userUpdateById=async (req,res)=>{
         if(!name&&!email&&!password&&!role&&!createdAt){
             return res.status(401).json({message:"Enter atleaste one field for update"})
         }
-
-        
-
+ 
         const updateData={}
 
         if(name) updateData.name=name
