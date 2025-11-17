@@ -2,6 +2,9 @@ const slugify=require("slugify");
 const Products=require("../model/product");
 const { strict } = require("assert");
 const { default: mongoose } = require("mongoose");
+const Orders=require("../model/order");
+
+
 
 
 
@@ -96,3 +99,19 @@ exports.updateProducById=async (req,res)=>{
     }
 }
 
+// Logic for Get all orders
+
+exports.getAllOrders=async (req,res)=>{
+    try {
+        const orders=await Orders.find();
+    
+        
+        if(!orders){
+            return res.status(404).json({message:"Orders all not found"});
+        }
+
+        res.status(200).json({message:"All orders are",orders:orders})
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
