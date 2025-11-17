@@ -2,12 +2,25 @@ const express=require("express");
 const adminAndSellerRouter=express.Router();
 const {verifyToken}=require("../middleware/auth");
 const {roleChecking}=require("../middleware/role");
-const {createProduct}=require("../controller/adminAndSeller");
+const {createProduct,getAllProducts,updateProducById}=require("../controller/adminAndSeller");
 
 adminAndSellerRouter.post(
     "/create-product",
     verifyToken,
-    roleChecking("Admin,Seller"),
+    roleChecking("admin","seller"),
     createProduct);
+
+adminAndSellerRouter.get(
+    "/products",
+    verifyToken,
+    roleChecking("admin","seller"),
+    getAllProducts);
+
+adminAndSellerRouter.put(
+    "/products/:productId",
+    verifyToken,
+    roleChecking("admin","seller"),
+    updateProducById
+);
 
 module.exports=adminAndSellerRouter;

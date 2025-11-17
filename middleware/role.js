@@ -1,12 +1,12 @@
-const User=require("../model/user")
+const User=require("../model/user");
+const { use } = require("../router/adminAndSeller");
 
 exports.roleChecking=(...roles)=>{
     return async (req,res,next)=>{
         try {
             const user=await User.findById(req.user.userId);
             
-
-            if(!user||user.role.includes(roles)){
+            if(!user||!roles.includes(user.role.trim().toLowerCase())){
             return res.status(403).json({message:"You not access for do this"});
             }
             next();
