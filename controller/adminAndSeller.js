@@ -99,6 +99,28 @@ exports.updateProducById=async (req,res)=>{
     }
 }
 
+// logic for delete product by Id
+
+exports.deleteProductById=async (req,res)=>{
+    try {
+        const {productId}=req.params;
+
+        if(!mongoose.isValidObjectId(productId)){
+            return res.status(400).json({message:"Please provide Id correctly"})
+        }
+
+        const deleteProduct=await Products.findByIdAndDelete(productId);
+
+        if(!deleteProduct){
+            return res.status(404).json({message:"Not found product with this Id"});
+        }
+
+        res.status(200).json({message:"Successfully deleted this product",product:deleteProduct});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
+
 // Logic for Get all orders
 
 exports.getAllOrders=async (req,res)=>{

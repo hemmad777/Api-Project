@@ -2,7 +2,7 @@ const express=require("express");
 const adminAndSellerRouter=express.Router();
 const {verifyToken}=require("../middleware/auth");
 const {roleChecking}=require("../middleware/role");
-const {createProduct,getAllProducts,updateProducById,getAllOrders}=require("../controller/adminAndSeller");
+const {createProduct,getAllProducts,updateProducById,deleteProductById,getAllOrders}=require("../controller/adminAndSeller");
 
 adminAndSellerRouter.post(
     "/create-product",
@@ -23,6 +23,13 @@ adminAndSellerRouter.put(
     verifyToken,
     roleChecking("admin","seller"),
     updateProducById
+);
+
+adminAndSellerRouter.delete(
+    "/products/delete/:productId",
+    verifyToken,
+    roleChecking("admin","seller"),
+    deleteProductById
 );
 
 adminAndSellerRouter.get(
