@@ -137,3 +137,28 @@ exports.getAllOrders=async (req,res)=>{
         res.status(500).json({message:error.message});
     }
 }
+
+// Logic for patch order status
+
+exports.patchProductById=async(req,res)=>{
+    try {
+        const {orderId}=req.params;
+        const {status}=req.body
+
+        if(!mongoose.isValidObjectId(orderId)){
+            return res.status(400).json({message:"Please provide Id correctly"});
+        }
+
+        const patchOrder=await Orders.findByIdAndUpdate(orderId,{status:status},{new:true,runValidators:true});
+
+        if(!patchOrder){
+            return res.status(404).json({message:"Not found order with this Id"})
+        }
+
+        res.status(200).json({message:"Successfully changed the order status",order:patchOrder});
+
+
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
