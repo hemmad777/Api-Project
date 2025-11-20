@@ -1,8 +1,8 @@
-const express=require("express");
-const orderRouter=express.Router();
-const {createOrder,getAllOrder,getOrderById}=require("../controller/order");
-const {verifyToken}=require("../middleware/auth");
 
+import express from "express";
+const orderRouter = express.Router();
+import {createOrder,getAllOrder,getOrderById} from "../controller/order";
+import {verifyToken} from "../middleware/auth";
 
 orderRouter.post("/create",verifyToken,createOrder);
 orderRouter.get("/my-orders",verifyToken,getAllOrder);

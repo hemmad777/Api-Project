@@ -1,7 +1,8 @@
-const express=require("express");
+
+import express from "express";
 const wishlistRoute=express.Router();
-const {addProduct,getAllWishlists,getProductById}=require("../controller/wishlist");
-const {verifyToken}=require("../middleware/auth");
+import {addProduct,getAllWishlists,getProductById} from "../controller/wishlist";
+import {verifyToken} from "../middleware/auth";
 
 wishlistRoute.post("/:productId",verifyToken,addProduct);
 wishlistRoute.get("/me",verifyToken,getAllWishlists);

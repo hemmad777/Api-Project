@@ -1,8 +1,8 @@
-const express=require("express");
+import express from "express";
 const adminAndSellerRouter=express.Router();
-const {verifyToken}=require("../middleware/auth");
-const {roleChecking}=require("../middleware/role");
-const {createProduct,getAllProducts,updateProducById,deleteProductById,getAllOrders,patchProductById}=require("../controller/adminAndSeller");
+import {verifyToken} from "../middleware/auth";
+import {roleChecking} from "../middleware/role";
+import {createProduct,getAllProducts,updateProducById,deleteProductById,getAllOrders,patchProductById} from "../controller/adminAndSeller";
 
 adminAndSellerRouter.post(
     "/create-product",

@@ -1,8 +1,8 @@
-const express=require("express");
-const productRoute=express.Router();
 
-const {getAllProducts,getProductById,productSearch}=require("../controller/product");
-const {verifyToken}=require("../middleware/auth");
+import express from "express";
+const productRoute=express.Router();
+import {getAllProducts,getProductById,productSearch} from "../controller/product";
+import {verifyToken} from "../middleware/auth";
 
 productRoute.get("/all",verifyToken,getAllProducts);
 productRoute.get("/search",verifyToken,productSearch);

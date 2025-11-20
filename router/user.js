@@ -1,8 +1,8 @@
-const express = require("express");
-const userRoute = express.Router();
 
-const { register,login,userGetMe } = require("../controller/user");
-const {verifyToken}=require("../middleware/auth")
+import express from "express";
+const userRoute=express.Router();
+import { register,login,userGetMe } from "module";
+import {verifyToken} from "../middleware/auth";
 
 
 userRoute.post("/register", register);

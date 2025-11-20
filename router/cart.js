@@ -1,7 +1,9 @@
-const express=require("express");
+
+import express from "express";
 const cartRoute=express.Router();
-const {postCart,getAllCart,deleteCart,deleteOne}=require("../controller/cart");
-const {verifyToken}=require("../middleware/auth")
+import {poatCart,getAllCart,deleteCart,deleteOne} from "../controller/cart";
+import {verifyToken} from '../middleware/auth';
+
 
 cartRoute.post("/add",verifyToken,postCart);
 cartRoute.get("/all",verifyToken,getAllCart);
