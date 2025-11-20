@@ -1,6 +1,7 @@
-const Cart=require("../model/cart");
-const Product=require("../model/product");
-const mongoose=require("mongoose");
+
+import Cart from "../model/cart";
+import Product from "../model/product";
+import mongoose from "mongoose";
 
 // Logic for Post cart
 exports.postCart=async (req,res)=>{

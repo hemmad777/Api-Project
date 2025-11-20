@@ -1,6 +1,8 @@
 
-const Users=require("../model/user");
-const bcrypt=require("bcrypt");
+
+import Users from "../model/user";
+import bcrypt from "bcrypt";
+
 
 
 // Logic for created Admin

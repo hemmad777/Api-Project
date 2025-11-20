@@ -1,9 +1,9 @@
-const jwt=require("jsonwebtoken");
-const bcrypt=require("bcrypt");
-const Users=require("../model/user");
-const dotEnv=require("dotenv").config();
 
-
+import  jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import Users from "../model/user";
+import dotEnv from "dotenv";
+dotEnv.config();
 
 // Created userRegister section
 exports.register = async (req,res)=>{

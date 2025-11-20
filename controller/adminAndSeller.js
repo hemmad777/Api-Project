@@ -1,10 +1,8 @@
-const slugify=require("slugify");
-const Products=require("../model/product");
-const { strict } = require("assert");
-const { default: mongoose } = require("mongoose");
-const Orders=require("../model/order");
 
-
+import slugify from "slugify";
+import Products from "../model/product";
+import mongoose from "mongoose";
+import Orders from "../model/order";
 
 
 
@@ -162,3 +160,20 @@ exports.patchProductById=async(req,res)=>{
         res.status(500).json({message:error.message});
     }
 }
+
+// logic for create metrics
+
+exports.dashboardMetrics=async(req,res)=>{
+    try {
+        const totalRevenue=Orders.aggregate([
+            {$match:{$status:"Delevered"}},
+            {$group:{_id:null, total:{$sum:totalAmount}}}
+        ]);
+
+        const totalOrders=Orders.countDocuments();
+
+        const lowStock=Products.countDocuments({$stock:{$lt:5}});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+} 

@@ -1,6 +1,6 @@
-const cartCollection=require("../model/cart");
-const order = require("../model/order");
 
+import cartCollection from "../model/cart";
+import order from "../model/order";
 
 
 // Logic for create order

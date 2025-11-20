@@ -1,6 +1,5 @@
 
-const Product=require("../model/product");
-
+import Product from "../model/product";
 
 // Get all products 
 exports.getAllProducts=async (req,res)=>{
