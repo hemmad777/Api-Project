@@ -1,5 +1,5 @@
-const User=require("../model/user");
-const { use } = require("../router/adminAndSeller");
+
+import User from "../model/user";
 
 exports.roleChecking=(...roles)=>{
     return async (req,res,next)=>{
