@@ -1,19 +1,22 @@
-const express=require("express");
-const mongoose=require("mongoose");
-const dotenv=require("dotenv");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+
 dotenv.config();
 const app=express();
 
 app.use(express.json())
 
 // Import all routers here
-const userRouter = require("./router/user")
-const productRouter=require("./router/product");
-const cartRouter=require("./router/cart");
-const wishlistRouter=require("./router/wishlist");
-const adminRouter=require("./router/admin");
-const orderRouter=require("./router/order");
-const adminAndSellerRouter=require("./router/adminAndSeller");
+
+import userRouter from "./router/user";
+import productRouter from "./router/product";
+import cartRouter from "./router/cart";
+import wishlistRouter from "./router/wishlist";
+import adminRouter from "./router/admin";
+import orderRouter from "./router/order";
+import adminAndSellerRouter from "./router/adminAndSeller";
+
 
 app.use("/auth", userRouter);
 app.use("/products",productRouter);
