@@ -1,6 +1,4 @@
-const mongoose =require("mongoose");
-const slugify=require("slugify");
-const { applyTimestamps } = require("./user");
+import mongoose from "mongoose";
 
 const productModel=new mongoose.Schema({
     name:{
