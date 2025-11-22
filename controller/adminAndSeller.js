@@ -3,6 +3,8 @@ const Products=require("../model/product");
 const { strict } = require("assert");
 const { default: mongoose } = require("mongoose");
 const Orders=require("../model/order");
+const { format } = require("path");
+
 
 
 
@@ -162,3 +164,79 @@ exports.patchProductById=async(req,res)=>{
         res.status(500).json({message:error.message});
     }
 }
+
+// Logic for sales dashbord
+
+exports.dashboardMetrics=async (req,res)=>{
+
+
+    const allOrders=await Orders.find();
+
+    if(allOrders.length==0){
+        return res.status(404).json({message:"Entire sales all empty"})
+    }
+
+    const limit=req.body.limit
+
+    const lastNDays= (n)=>{
+        return Array.from({length:n},(s,i)=>{
+            const thisDay=new Date();
+            thisDay.setDate(thisDay.getDate()-i);
+
+            return `${thisDay.getFullYear()}-${thisDay.getMonth()+1}-${thisDay.getDate()}`
+        })
+    }
+    
+    const lastNDates = lastNDays(limit);
+
+
+    const Cod=await Orders.aggregate([
+        {$unwind:"$items"},
+        {$match:{status:"Delivered",method:"Cod"}},
+        {
+            $group:{
+                _id:{
+                    $dateToString:{format:"%Y-%m-%d",date:"$updatedAt"}
+                },
+                    totalOrders:{$sum:"$items.quantity"}
+            }
+        },
+        {$sort:{_id:-1}},
+        {$limit:limit}
+    ]);
+
+    const lastNDaysCod=lastNDates.map(date=>{
+        const found=Cod.find(c=>c._id===date);
+        return found?found.totalOrders:0
+    });
+
+    const Gpay=await Orders.aggregate([
+        {$unwind:"$items"},
+        {$match:{status:"Delivered",method:"Gpay"}},
+        {
+            $group:{
+                _id:{
+                    $dateToString:{format:"%Y-%m-%d",date:"$updatedAt"}
+                },
+                    totalOrders:{$sum:"$items.quantity"}
+            }
+        },
+        {$sort:{_id:-1}},
+        {$limit:limit}
+    ]);
+
+    
+    const lastNDaysOnline=lastNDates.map(date=>{
+        const found=Gpay.find(g=>g._id===date);
+        return found?found.totalOrders:0
+    })
+
+   
+
+    res.status(200).json({message:"Successfully taked your all dashboard data",
+        lastNDates,
+        lastNDaysCod,
+        lastNDaysOnline
+    });
+}
+
