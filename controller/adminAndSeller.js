@@ -240,3 +240,57 @@ exports.dashboardMetrics=async (req,res)=>{
     });
 }
 
+// Logic for monthly dashboard
+
+exports.monthlyDashboard=async (req,res)=>{
+    try {
+        const allOrders=await Orders.find();
+
+        if(allOrders.length===0){
+            return res.status(404).json({message:"Entire sales all empty"});
+        }
+
+        const limit=req.body.limit;
+
+
+        const lastNMonths=(n)=>{
+            return Array.from({length:n},(_,i)=>{
+                const thisDay=new Date();
+                thisDay.setMonth(thisDay.getMonth()-i);
+                return `${thisDay.getFullYear()}-${String(thisDay.getMonth()+1).padStart(2,"0")}`
+            })
+        }
+
+         const lastMonths=lastNMonths(limit);
+
+        const monthSales=await Orders.aggregate([
+            {$unwind:"$items"},
+            {$match:{status:"Delivered"}},
+            {
+                $group:{
+                    _id:{
+                        $dateToString:{format:"%Y-%m",date:"$updatedAt"}
+                    },
+                    totalOrders:{$sum:"$items.quantity"}
+                }
+            },
+            {$sort:{_id:-1}},
+            {$limit:limit}
+        ]);
+
+        const Monthlysales=lastMonths.map(month=>{
+            const sales=monthSales.find(s=>s._id==month);
+
+            return sales?sales.totalOrders:0
+        });
+
+        res.status(200).json({message:"Your monthly dashboard is",
+            lastMonths,
+            Monthlysales
+        });
+        
+
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
