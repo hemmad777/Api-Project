@@ -1,7 +1,8 @@
 
 const Users=require("../model/user");
 const bcrypt=require("bcrypt");
-
+const Category=require("../model/category");
+const fs=require("fs");
 
 // Logic for created Admin
 exports.createAdmin=async (req,res)=>{
@@ -19,7 +20,7 @@ exports.createAdmin=async (req,res)=>{
             return res.status(401).json({message:"This fields are required"});
         }
 
-        if(role!="Admin"){
+        if(role!="Admin"||role!="Seller"){
             return res.status(401).json({message:"Role must be Admin"});
         }
 
@@ -106,3 +107,45 @@ exports.userUpdateById=async (req,res)=>{
     }
 }
 
+// Logic for category creation 
+
+exports.createCategory=async(req,res)=>{
+    try {
+        const{name,image}=req.body;
+
+        const exist=await Category.findOne({ name });
+
+        if (exist) {
+            if (req.file) {
+                fs.unlinkSync(req.file.path);
+            }
+            return res.status(401).json({message:"This category allready created"})
+        }
+
+        const category=new Category({
+            name,
+            image:req.file?req.file.path:null
+        });
+
+        await category.save()
+        res.status(201).json({message:"Successfylly created the category",category});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
+
+// Logic for get all category
+
+exports.getAllCategories=async(req,res)=>{
+    try {
+        const categories=await Category.find();
+
+        if(categories.length===0){
+            return res.status(404).json({message:"Categories also empty"})
+        }
+
+        res.status(201).json({message:"Successfully taked your categories",categories});
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
