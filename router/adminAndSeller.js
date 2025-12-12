@@ -4,10 +4,15 @@ const {verifyToken}=require("../middleware/auth");
 const {roleChecking}=require("../middleware/role");
 const {createProduct,getAllProducts,updateProducById,deleteProductById,getAllOrders,patchProductById,dashboardMetrics,monthlyDashboard}=require("../controller/adminAndSeller");
 
+const multer=require("multer")
+const storage=require("../middleware/upload")
+const uploadimage= (folder)=> multer({storage:storage(folder)})
+
 adminAndSellerRouter.post(
     "/create-product",
     verifyToken,
     roleChecking("admin","seller"),
+    uploadimage("images/products").single("image"),
     createProduct
 );
 
