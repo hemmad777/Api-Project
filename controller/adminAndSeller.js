@@ -4,7 +4,7 @@ const { strict } = require("assert");
 const { default: mongoose } = require("mongoose");
 const Orders=require("../model/order");
 const { format } = require("path");
-
+const fs = require("fs")
 
 
 
@@ -14,10 +14,18 @@ const { format } = require("path");
 
 exports.createProduct=async(req,res)=>{
     try {
-        const {name,description,price,stock,category,imageUrl,isPublished}=req.body;
+        const {name,description,price,stock,category,image,isPublished}=req.body;
 
         if(!name||!description||!price||!stock||!category||!image){
             return res.status(400).json({message:"Not provided all required field"});
+        }
+
+        const exist=await Products.find();
+
+        if(exist){
+            if(req.file){
+                fs.unlinkSync(req.file.path);
+            }
         }
 
         const slug=slugify(name,{lower:true,strict:true});
@@ -29,7 +37,7 @@ exports.createProduct=async(req,res)=>{
             price,
             stock,
             category,
-            image,
+            image:req.file?req.file.path:null,
             isPublished:isPublished||false
         })
 
