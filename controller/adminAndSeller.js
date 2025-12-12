@@ -16,7 +16,7 @@ exports.createProduct=async(req,res)=>{
     try {
         const {name,description,price,stock,category,imageUrl,isPublished}=req.body;
 
-        if(!name||!description||!price||!stock||!category||!imageUrl){
+        if(!name||!description||!price||!stock||!category||!image){
             return res.status(400).json({message:"Not provided all required field"});
         }
 
@@ -29,7 +29,7 @@ exports.createProduct=async(req,res)=>{
             price,
             stock,
             category,
-            imageUrl,
+            image,
             isPublished:isPublished||false
         })
 

@@ -23,7 +23,7 @@ const productModel=new mongoose.Schema({
     },category:{
         type:String,
         required:[true,"choose category"]
-    },imageUrl:{
+    },image:{
         type:String,
         required:[true,"please provide image url"]
     },isPublished:{

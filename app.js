@@ -6,6 +6,7 @@ dotenv.config();
 const app=express();
 
 app.use(cors());
+app.use("/categories/uploads", express.static("categories/uploads"));
 app.use(express.json())
 
 // Import all routers here
