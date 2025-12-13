@@ -61,3 +61,20 @@ exports.productSearch=async (req,res)=>{
         return res.status(500).json({error:error.message});
     }
 }
+
+// Logic for featured products
+
+exports.featuredProducts=async(req,res)=>{
+    try {
+        const featured=await Product.find({isPublished:true});
+
+        if(featured.length===0){
+            return res.status(404).json({message:"Featured products are empty"})
+        }
+
+        res.status(201).json({message:"Thease are featured products",featured})
+
+    } catch (error) {
+        res.status(500).json({message:error.message});
+    }
+}
