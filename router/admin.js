@@ -24,15 +24,15 @@ adminRoute.put(
 );
 adminRoute.post(
     "/create/category",
-    verifyToken,
-    roleChecking("admin"),
+    // verifyToken,
+    // roleChecking("admin"),
     uploadimage("images/categories").single("image"),
     createCategory
 );
 adminRoute.get(
     "/categories",
-    verifyToken,
-    roleChecking("admin"),
+    // verifyToken,
+    // roleChecking("admin"),
     getAllCategories
 );
 adminRoute.get(

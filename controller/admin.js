@@ -113,6 +113,8 @@ exports.createCategory=async(req,res)=>{
     try {
         const{name,image}=req.body;
 
+        const upperName=name.toUpperCase();
+
         const exist=await Category.findOne({ name });
 
         if (exist) {
@@ -123,7 +125,7 @@ exports.createCategory=async(req,res)=>{
         }
 
         const category=new Category({
-            name,
+            name:upperName,
             image:req.file?req.file.path:null
         });
 
