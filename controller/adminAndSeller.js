@@ -14,15 +14,15 @@ const fs = require("fs")
 
 exports.createProduct=async(req,res)=>{
     try {
-        const {name,description,price,stock,category,image,isPublished}=req.body;
+        const {name,description,price,stock,category,isPublished,isFeatured}=req.body;
 
-        if(!name||!description||!price||!stock||!category||!image){
+        if(!name||!description||!price||!stock||!category||!req.file){
             return res.status(400).json({message:"Not provided all required field"});
         }
 
         const exist=await Products.find();
 
-        if(exist){
+        if(exist.length===0){
             if(req.file){
                 fs.unlinkSync(req.file.path);
             }
@@ -38,7 +38,8 @@ exports.createProduct=async(req,res)=>{
             stock,
             category,
             image:req.file?req.file.path:null,
-            isPublished:isPublished||false
+            isPublished:isPublished||false,
+            isFeatured:isFeatured||false
         })
 
         await product.save();

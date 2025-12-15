@@ -10,8 +10,8 @@ const uploadimage= (folder)=> multer({storage:storage(folder)})
 
 adminAndSellerRouter.post(
     "/create-product",
-    verifyToken,
-    roleChecking("admin","seller"),
+    // verifyToken,
+    // roleChecking("admin","seller"),
     uploadimage("images/products").single("image"),
     createProduct
 );

@@ -66,7 +66,7 @@ exports.productSearch=async (req,res)=>{
 
 exports.featuredProducts=async(req,res)=>{
     try {
-        const featured=await Product.find({isPublished:true});
+        const featured=await Product.find({isFeatured:true});
 
         if(featured.length===0){
             return res.status(404).json({message:"Featured products are empty"})
