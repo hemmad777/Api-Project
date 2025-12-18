@@ -115,8 +115,9 @@ exports.createCategory=async(req,res)=>{
 
         const upperName=name.toUpperCase();
 
-        const exist=await Category.findOne({ name });
-
+        const exist=await Category.findOne({ name:upperName });
+        console.log(exist);
+        
         if (exist) {
             if (req.file) {
                 fs.unlinkSync(req.file.path);

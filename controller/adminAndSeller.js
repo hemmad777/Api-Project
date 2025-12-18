@@ -20,9 +20,9 @@ exports.createProduct=async(req,res)=>{
             return res.status(400).json({message:"Not provided all required field"});
         }
 
-        const exist=await Products.find();
+        const exist=await Products.findOne({name});
 
-        if(exist.length===0){
+        if(exist){
             if(req.file){
                 fs.unlinkSync(req.file.path);
             }
@@ -37,7 +37,7 @@ exports.createProduct=async(req,res)=>{
             price,
             stock,
             category,
-            image:req.file?req.file.path:null,
+            image:`/images/products/${req.file.filename}`,
             isPublished:isPublished||false,
             isFeatured:isFeatured||false
         })

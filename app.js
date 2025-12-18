@@ -6,8 +6,8 @@ dotenv.config();
 const app=express();
 
 app.use(cors());
-app.use("/images/categories", express.static("images/categories"));
 app.use("/images/products",express.static("images/products"));
+app.use("/images/categories", express.static("images/categories"));
 app.use(express.json())
 
 // Import all routers here
