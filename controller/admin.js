@@ -152,3 +152,19 @@ exports.getAllCategories=async(req,res)=>{
         res.status(500).json({message:error.message});
     }
 }
+
+// Logic for get category by id
+
+exports.getCategoryById=async(req,res)=>{
+    try {
+         const category=await Category.findById(req.params.id);
+
+         if (!category) {
+            return res.status(404).json({message:"Not found category with this id"});
+         }
+
+         res.status(201).json({message:`Successfylly take the category with Id ${category}`});
+    } catch (error) {
+        res.status(500).json({message:error.message})
+    }
+}
